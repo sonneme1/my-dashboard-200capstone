@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { Bar, Line, Doughnut } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -213,7 +213,7 @@ const onTimeDeliveryData = computed(() => {
         data: periodMonths.map(month => {
           const ms = regions.map(region => metrics.find((m: any) => m.month === month && m.region === region)).filter(Boolean)
           if (!ms.length) return 0
-          return (ms.reduce((a, b) => a + b.onTimeDelivery.rate, 0) / ms.length) * 100
+          return (ms.reduce((a, b) => a + (b?.onTimeDelivery?.rate ?? 0), 0) / ms.length) * 100
         })
       }
     ]
@@ -250,7 +250,9 @@ const regionalPerformanceData = computed(() => {
 const exceptionsData = computed(() => {
   const periodMonths = getPeriodMonths(selectedPeriod.value)
   const filtered = metrics.filter((m: any) => periodMonths.includes(m.month) && (selectedRegion.value === 'All' || m.region === selectedRegion.value))
-  const sumType = (type: string) => filtered.reduce((a, b) => a + (b.exceptions.byType[type] || 0), 0)
+  const sumType = (type: keyof typeof filtered[0]['exceptions']['byType']) =>
+    filtered.reduce((a, b) => a + (b.exceptions.byType?.[type] || 0), 0)
+  // If filtered is empty, fallback to string type for types array
   const types = ['damaged', 'delayed', 'lost', 'customsHold']
   return {
     labels: types.map(t => t.charAt(0).toUpperCase() + t.slice(1)),
