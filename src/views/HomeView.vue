@@ -26,15 +26,17 @@
       <v-container fluid class="py-6">
         <!-- Summary Cards -->
         <v-row class="mb-6" align="stretch">
-          <v-col cols="12" sm="6" md="3" v-for="card in summaryCards" :key="card.title">
-            <v-card class="pa-4" elevation="2" :color="card.trend >= 0 ? 'surface' : 'surface-variant'">
-              <div class="d-flex align-center justify-space-between mb-2">
-                <span class="text-h6 font-weight-bold">{{ card.title }}</span>
-                <v-icon :color="card.trend > 0 ? 'success' : card.trend < 0 ? 'error' : 'grey'">
-                  {{ card.trend > 0 ? 'mdi-arrow-up' : card.trend < 0 ? 'mdi-arrow-down' : 'mdi-minus' }}
-                </v-icon>
+          <v-col cols="12" sm="6" md="3" v-for="card in summaryCards" :key="card.title" class="d-flex">
+            <v-card class="pa-4 flex-grow-1 d-flex flex-column justify-space-between summary-card" elevation="2" :color="card.trend >= 0 ? 'surface' : 'surface-variant'">
+              <div>
+                <div class="d-flex align-center justify-space-between mb-2">
+                  <span class="text-h6 font-weight-bold">{{ card.title }}</span>
+                  <v-icon :color="card.trend > 0 ? 'success' : card.trend < 0 ? 'error' : 'grey'">
+                    {{ card.trend > 0 ? 'mdi-arrow-up' : card.trend < 0 ? 'mdi-arrow-down' : 'mdi-minus' }}
+                  </v-icon>
+                </div>
+                <div class="text-h4 font-weight-bold mb-1">{{ card.value }}</div>
               </div>
-              <div class="text-h4 font-weight-bold mb-1">{{ card.value }}</div>
               <div class="text-caption" :class="card.trend > 0 ? 'text-success' : card.trend < 0 ? 'text-error' : ''">
                 {{ card.trend > 0 ? '+' : '' }}{{ card.trendPercent }}% vs prev
               </div>
@@ -43,30 +45,32 @@
         </v-row>
 
         <!-- Charts Row -->
-        <v-row>
-          <v-col cols="12" md="8">
-            <v-card class="pa-4 mb-6" elevation="2">
+        <v-row align="stretch">
+          <v-col cols="12" md="6" class="d-flex">
+            <v-card class="pa-4 mb-6 flex-grow-1 d-flex flex-column chart-row-card" elevation="2">
               <div class="text-h6 font-weight-bold mb-2">Shipment Volume Trend</div>
               <Bar :data="shipmentVolumeData" :options="barChartOptions" />
             </v-card>
           </v-col>
-          <v-col cols="12" md="4">
-            <v-card class="pa-4 mb-6" elevation="2">
+          <v-col cols="12" md="6" class="d-flex">
+            <v-card class="pa-4 mb-6 flex-grow-1 d-flex flex-column chart-row-card" elevation="2">
               <div class="text-h6 font-weight-bold mb-2">On-Time Delivery Rate</div>
               <Line :data="onTimeDeliveryData" :options="lineChartOptions" />
             </v-card>
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-card class="pa-4 mb-6" elevation="2">
+        <v-row align="stretch">
+          <v-col cols="12" md="6" class="d-flex">
+            <v-card class="pa-4 mb-6 flex-grow-1 d-flex flex-column chart-row-card" elevation="2">
               <div class="text-h6 font-weight-bold mb-2">Regional Performance</div>
-              <Bar :data="regionalPerformanceData" :options="barChartOptions" />
+              <div style="position:relative; height:340px; width:100%;">
+                <Bar :data="regionalPerformanceData" :options="barChartOptions" />
+              </div>
             </v-card>
           </v-col>
-          <v-col cols="12" md="6">
-            <v-card class="pa-4 mb-6" elevation="2">
+          <v-col cols="12" md="6" class="d-flex">
+            <v-card class="pa-4 mb-6 flex-grow-1 d-flex flex-column chart-row-card" elevation="2">
               <div class="text-h6 font-weight-bold mb-2">Open Exceptions</div>
               <Doughnut :data="exceptionsData" :options="doughnutOptions" />
             </v-card>
@@ -306,7 +310,20 @@ const doughnutOptions = {
 }
 </script>
 
-<style scoped>
+.chart-row-card {
+  min-height: 340px;
+}
+.chart-row-card .chartjs-render-monitor,
+.chart-row-card canvas {
+  height: 100% !important;
+  max-height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: unset !important;
+}
+.summary-card {
+  min-height: 160px;
+}
 .v-application {
   background: #16171d;
   color: #f3f4f6;
@@ -320,4 +337,4 @@ const doughnutOptions = {
 .text-error {
   color: #e53935 !important;
 }
-</style>
+
