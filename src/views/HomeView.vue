@@ -253,15 +253,15 @@ const exceptionsData = computed(() => {
     type ExceptionType = 'damaged' | 'delayed' | 'lost' | 'customsHold'
     const sumType = (type: ExceptionType) => filtered.reduce((a, b) => a + (b.exceptions.byType?.[type] || 0), 0)
     const types: ExceptionType[] = ['damaged', 'delayed', 'lost', 'customsHold']
-  return {
-    labels: types.map(t => t.charAt(0).toUpperCase() + t.slice(1)),
-    datasets: [
-      {
-        backgroundColor: ['#ff9800', '#1976d2', '#e53935', '#9c27b0'],
-        data: types.map(sumType)
-      }
-    ]
-  }
+    return {
+      labels: types.map(t => t.charAt(0).toUpperCase() + t.slice(1)),
+      datasets: [
+        {
+          backgroundColor: ['#ff9800', '#1976d2', '#e53935', '#9c27b0'],
+          data: types.map(type => sumType(type))
+        }
+      ]
+    }
 })
 
 function regionColor(region: string, faded = false) {
