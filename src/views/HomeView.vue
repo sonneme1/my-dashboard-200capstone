@@ -250,10 +250,9 @@ const regionalPerformanceData = computed(() => {
 const exceptionsData = computed(() => {
   const periodMonths = getPeriodMonths(selectedPeriod.value)
   const filtered = metrics.filter((m: any) => periodMonths.includes(m.month) && (selectedRegion.value === 'All' || m.region === selectedRegion.value))
-  const sumType = (type: keyof typeof filtered[0]['exceptions']['byType']) =>
-    filtered.reduce((a, b) => a + (b.exceptions.byType?.[type] || 0), 0)
-  // If filtered is empty, fallback to string type for types array
-  const types = ['damaged', 'delayed', 'lost', 'customsHold']
+    type ExceptionType = 'damaged' | 'delayed' | 'lost' | 'customsHold'
+    const sumType = (type: ExceptionType) => filtered.reduce((a, b) => a + (b.exceptions.byType?.[type] || 0), 0)
+    const types: ExceptionType[] = ['damaged', 'delayed', 'lost', 'customsHold']
   return {
     labels: types.map(t => t.charAt(0).toUpperCase() + t.slice(1)),
     datasets: [
