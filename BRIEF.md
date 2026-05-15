@@ -1,5 +1,5 @@
 
-#My Dashboard - Project Brief
+# My Dashboard - Project Brief
 
 ## Summary
 A single-page analytics dashboard showing monthly business metrics. 
@@ -43,7 +43,6 @@ Think Shopify admin or a simple Google Analytics view.
 - Cards should show a small up/down arrow or color indicating change from previous month
 
 ## Style
-- Dark theme by default (Vuetify dark theme)
 - Clean, minimal, lots of whitespace
 - Charts should use a cohesive color palette - not rainbow
 - Mobile responsive - cards stack on small screens
